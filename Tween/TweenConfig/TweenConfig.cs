@@ -14,19 +14,19 @@ namespace NgoUyenNguyen
 
         public bool enable = true;
         public float duration = 1f;
-        public float delay = 0f;
+        [Min(0)] public float delay;
         public LoopType loopType = LoopType.None;
         public LeanTweenType easeType = LeanTweenType.notUsed;
         public AnimationCurve animationCurve = AnimationCurve.Linear(0, 0, 1, 0);
         public UnityEngine.Events.UnityEvent onStart;
         public UnityEngine.Events.UnityEvent onComplete;
 
-        public void Play(GameObject gameObjectToAnimate)
+        public int? Play(GameObject gameObjectToAnimate)
         {
-            if (!enable) return;
+            if (!enable) return null;
             
             var tween = RunTween(gameObjectToAnimate);
-            if (tween == null) return;
+            if (tween == null) return null;
             
             tween.setDelay(delay)
                 .setOnStart(() => onStart.Invoke())
@@ -43,16 +43,8 @@ namespace NgoUyenNguyen
                     tween.setLoopPingPong();
                     break;
             }
-        }
-
-        public void Cancel(GameObject gameObjectToAnimate) => LeanTween.cancel(gameObjectToAnimate);
-
-        public void Pause(GameObject gameObjectToAnimate) => LeanTween.pause(gameObjectToAnimate);
-
-        public void Resume(GameObject gameObjectToAnimate)
-        {
-            if (!enable) return;
-            LeanTween.resume(gameObjectToAnimate);
+            
+            return tween.uniqueId;
         }
 
         protected abstract LTDescr RunTween(GameObject gameObjectToAnimate);
