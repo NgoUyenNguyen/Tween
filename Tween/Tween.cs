@@ -25,8 +25,8 @@ namespace NgoUyenNguyen
         public UnityEvent onCancel;
         public UnityEvent onPause;
         public UnityEvent onResume;
-        
-        protected State currentState = State.Idle;
+
+        private State currentState = State.Idle;
         
         private List<int> activeTweenIds = new();
         private CancellationTokenSource cts;

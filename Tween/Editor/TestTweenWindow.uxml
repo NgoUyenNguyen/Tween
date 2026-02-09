@@ -1,0 +1,4 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Label text="Tween List" style="font-size: 25px; -unity-font-style: bold; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-bottom-width: 1px; margin-top: 5px; margin-right: 5px; margin-bottom: 5px; margin-left: 5px;" />
+    <ui:ListView item-template="TestTweenItem.uxml" />
+</ui:UXML>

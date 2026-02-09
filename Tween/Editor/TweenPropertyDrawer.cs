@@ -13,12 +13,6 @@ namespace NgoUyenNguyen
         {
             var root = new VisualElement();
             visualTreeAsset.CloneTree(root);
-
-            if (!EditorApplication.isPlaying)
-            {
-                root.Q<Tab>(name:"test").RemoveFromHierarchy();
-            }            
-            
             return root;
         }
     }

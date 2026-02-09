@@ -1,0 +1,11 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:VisualElement style="flex-direction: row; align-items: center; justify-content: space-between;">
+        <ui:Label text="Label" style="margin-left: 5px; -unity-font-style: bold;" />
+        <ui:VisualElement style="flex-direction: row;">
+            <ui:Button text="Play" name="play" style="width: 60px;" />
+            <ui:Button text="Pause" name="pause" style="width: 60px;" />
+            <ui:Button text="Resume" name="resume" style="width: 60px;" />
+            <ui:Button text="Cancel" name="cancel" style="width: 60px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
