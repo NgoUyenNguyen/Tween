@@ -27,10 +27,10 @@ namespace NgoUyenNguyen
             
             var tween = RunTween(gameObjectToAnimate);
             if (tween == null) return null;
-            
-            tween.setDelay(delay)
-                .setOnStart(() => onStart.Invoke())
-                .setOnComplete(() => onComplete.Invoke());
+
+            tween.setOnStart(() => onStart?.Invoke())
+                .setOnComplete(() => onComplete?.Invoke())
+                .setDelay(delay);
             if (easeType == LeanTweenType.animationCurve) tween.setEase(animationCurve);
             else tween.setEase(easeType);
 

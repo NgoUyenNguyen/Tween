@@ -33,12 +33,12 @@ namespace NgoUyenNguyen
         
         public void RemoveAll() => tweens.Clear();
         
-        public Tween GetTween(string tweenName) => tweens.Find(t => t.name == tweenName);
+        public Tween GetTween(string name) => tweens.Find(t => t.name == name);
         public Tween GetTween(int index) => index < tweens.Count && index >= 0 ? tweens[index] : null;
 
-        public bool Play(string tweenName)
+        public bool Play(string name)
         {
-            var tween = GetTween(tweenName);
+            var tween = GetTween(name);
             return tween != null && tween.Play(destroyCancellationToken);
         }
         
@@ -47,6 +47,8 @@ namespace NgoUyenNguyen
             var tween = GetTween(index);
             return tween != null && tween.Play(destroyCancellationToken);
         }
+
+        public void Play(Tween tween) => tween?.Play(destroyCancellationToken);
 
         public void PlayAll()
         {
