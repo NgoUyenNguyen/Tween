@@ -63,8 +63,6 @@ namespace NgoUyenNguyen
 
         public async UniTask PlayAll(CancellationToken token = default)
         {
-            foreach (var tween in tweens) tween?.Play(destroyCancellationToken);
-            
             var cts = CancellationTokenSource.CreateLinkedTokenSource(token, destroyCancellationToken);
             await UniTask.WhenAll(tweens.Select(t => t.Play(cts.Token)));
         }
