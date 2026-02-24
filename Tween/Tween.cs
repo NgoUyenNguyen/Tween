@@ -33,7 +33,7 @@ namespace NgoUyenNguyen
         
         public State CurrentState => currentState;
         
-        public bool Play(CancellationToken externalToken)
+        public async UniTask<bool> Play(CancellationToken externalToken)
         {
             if (target == null || currentState != State.Idle) return false;
 
@@ -43,12 +43,12 @@ namespace NgoUyenNguyen
 
             var linkedSource = CancellationTokenSource.CreateLinkedTokenSource(cts.Token, externalToken);
     
-            PlayAsync(linkedSource).Forget();
+            await InternalPlay(linkedSource);
 
             return true;
         }
-
-        private async UniTask PlayAsync(CancellationTokenSource linkedSource)
+        
+        private async UniTask InternalPlay(CancellationTokenSource linkedSource)
         {
             var token = linkedSource.Token;
             try
@@ -157,6 +157,9 @@ namespace NgoUyenNguyen
                 || currentState == State.Idle) return false;
 
             cts.Cancel();
+            cts.Dispose();
+            cts = null;
+            currentState = State.Idle;
 
             return true;
         }

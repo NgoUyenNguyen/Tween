@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace NgoUyenNguyen
@@ -36,23 +38,35 @@ namespace NgoUyenNguyen
         public Tween GetTween(string name) => tweens.Find(t => t.name == name);
         public Tween GetTween(int index) => index < tweens.Count && index >= 0 ? tweens[index] : null;
 
-        public bool Play(string name)
+        public async UniTask<bool> Play(string name, CancellationToken token = default)
         {
             var tween = GetTween(name);
-            return tween != null && tween.Play(destroyCancellationToken);
+
+            var cts = CancellationTokenSource.CreateLinkedTokenSource(token, destroyCancellationToken);
+            return tween != null && await tween.Play(cts.Token);
         }
         
-        public bool Play(int index)
+        public async UniTask<bool> Play(int index, CancellationToken token = default)
         {
             var tween = GetTween(index);
-            return tween != null && tween.Play(destroyCancellationToken);
+            var cts = CancellationTokenSource.CreateLinkedTokenSource(token, destroyCancellationToken);
+            return tween != null && await tween.Play(cts.Token);
         }
 
-        public void Play(Tween tween) => tween?.Play(destroyCancellationToken);
+        public async UniTask Play(Tween tween, CancellationToken token = default)
+        {
+            if (tween == null) return;
+            
+            var cts = CancellationTokenSource.CreateLinkedTokenSource(token, destroyCancellationToken);
+            await tween.Play(cts.Token);
+        }
 
-        public void PlayAll()
+        public async UniTask PlayAll(CancellationToken token = default)
         {
             foreach (var tween in tweens) tween?.Play(destroyCancellationToken);
+            
+            var cts = CancellationTokenSource.CreateLinkedTokenSource(token, destroyCancellationToken);
+            await UniTask.WhenAll(tweens.Select(t => t.Play(cts.Token)));
         }
 
         public bool Pause(string tweenName)
