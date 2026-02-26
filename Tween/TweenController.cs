@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using ZLinq;
 
 namespace NgoUyenNguyen
 {
@@ -42,14 +43,15 @@ namespace NgoUyenNguyen
         {
             var tween = GetTween(name);
 
-            var cts = CancellationTokenSource.CreateLinkedTokenSource(token, destroyCancellationToken);
+            using var cts = CancellationTokenSource.CreateLinkedTokenSource(token, destroyCancellationToken);
             return tween != null && await tween.Play(cts.Token);
         }
         
         public async UniTask<bool> Play(int index, CancellationToken token = default)
         {
             var tween = GetTween(index);
-            var cts = CancellationTokenSource.CreateLinkedTokenSource(token, destroyCancellationToken);
+            
+            using var cts = CancellationTokenSource.CreateLinkedTokenSource(token, destroyCancellationToken);
             return tween != null && await tween.Play(cts.Token);
         }
 
@@ -57,14 +59,22 @@ namespace NgoUyenNguyen
         {
             if (tween == null) return;
             
-            var cts = CancellationTokenSource.CreateLinkedTokenSource(token, destroyCancellationToken);
+            using var cts = CancellationTokenSource.CreateLinkedTokenSource(token, destroyCancellationToken);
             await tween.Play(cts.Token);
         }
 
         public async UniTask PlayAll(CancellationToken token = default)
         {
-            var cts = CancellationTokenSource.CreateLinkedTokenSource(token, destroyCancellationToken);
-            await UniTask.WhenAll(tweens.Select(t => t.Play(cts.Token)));
+            if (tweens.Count == 0) return;
+            
+            using var cts = CancellationTokenSource.CreateLinkedTokenSource(token, destroyCancellationToken);
+            await UniTask.WhenAll(tweens
+                .AsValueEnumerable()
+                .Where(t => t != null)
+                .Distinct()
+                .Select(t => t.Play(cts.Token))
+                .ToArray()
+            );
         }
 
         public bool Pause(string tweenName)
