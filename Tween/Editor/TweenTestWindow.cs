@@ -1,4 +1,5 @@
-﻿using System.Linq;
+using System.Linq;
+using Cysharp.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -31,7 +32,7 @@ namespace NgoUyenNguyen
                 element.Q<Label>().text = $"{id}. {tweenController.GetTween(id).name}";
                 
                 var playButton = element.Q<Button>(name: "play");
-                playButton.clicked += () => tweenController.Play(id);
+                playButton.clicked += () => tweenController.Play(id).Forget();
 
                 var pauseButton = element.Q<Button>(name: "pause");
                 pauseButton.clicked += () => tweenController.Pause(id);
